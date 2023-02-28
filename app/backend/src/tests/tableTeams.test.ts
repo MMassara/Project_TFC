@@ -20,7 +20,7 @@ describe('Testando a camada Service da tabela Teams', () => {
     sinon.restore();
   })
 
-  it('Verifica se é possível buscar todos os times da tabela Teams', async () => {
+  it('Verifica se é possível buscar todos os times da Tabela Teams', async () => {
     const outputMock = [
       {
         id: 1,
@@ -39,4 +39,18 @@ describe('Testando a camada Service da tabela Teams', () => {
 
     expect(result).to.be.eq(outputMock);
   });
+
+  it('Verifica se é possível bustar o time pelo ID na Tabela Teams', async () => {
+    const outputMock = {
+      id: 5,
+      teamName: 'Cruzeiro'
+    }
+
+    sinon.stub(TeamModel, 'findByPk').resolves(outputMock as TeamModel)
+
+    const service = new TeamService();
+    const result = await service.getTeamById(5)
+
+    expect(result).to.be.eq(outputMock);
+  })
 });
