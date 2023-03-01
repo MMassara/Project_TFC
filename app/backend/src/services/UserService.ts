@@ -31,14 +31,18 @@ export default class UserService {
   }
 
   async verifyToken(token: string): Promise<string | boolean> {
-    const userToken = jwt.verify(token, 'jwt_secret');
+    try {
+      const userToken = jwt.verify(token, 'jwt_secret');
 
-    if (typeof userToken !== 'string') {
-      const { id } = userToken;
+      if (typeof userToken !== 'string') {
+        const { id } = userToken;
 
-      const userRole = await this.model.findByPk(id);
+        const userRole = await this.model.findByPk(id);
 
-      return userRole?.dataValues.role;
+        return userRole?.dataValues.role;
+      }
+    } catch (error) {
+      console.log(error);
     }
 
     return false;
