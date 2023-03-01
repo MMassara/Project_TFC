@@ -5,6 +5,7 @@ import * as jwt from 'jsonwebtoken';
 
 // import IToken from '../interfaces/IToken';
 import UserModel from '../database/models/UserModel';
+import HttpException from '../middlewares/HttpException';
 
 // dotenv.config();
 
@@ -19,32 +20,25 @@ export default class UserService {
     const userPassword = await bcrypt.compare(password, user.password);
     if (userPassword === false) return null;
 
-    const { id } = user.dataValues;
+    const { id, role } = user.dataValues;
 
     const payload = {
       id,
-    };
+      role,
+    } as jwt.JwtPayload;
 
-    const token = jwt.sign(payload, 'jwt_secret');
+    const token = jwt.sign({ ...payload }, 'jwt_secret');
 
     return token;
   }
 
-  async verifyToken(token: string): Promise<string | boolean> {
+  static async verifyToken(token: string | undefined): Promise<jwt.JwtPayload> {
+    if (!token) throw new HttpException(401, 'Token not found');
     try {
       const userToken = jwt.verify(token, 'jwt_secret');
-
-      if (typeof userToken !== 'string') {
-        const { id } = userToken;
-
-        const userRole = await this.model.findByPk(id);
-
-        return userRole?.dataValues.role;
-      }
+      return userToken as jwt.JwtPayload;
     } catch (error) {
-      console.log(error);
+      throw new HttpException(401, 'Token invalid');
     }
-
-    return false;
   }
 }

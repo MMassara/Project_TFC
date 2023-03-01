@@ -26,15 +26,7 @@ export default class UserController {
   };
 
   public validateToken = async (req: Request, res: Response) => {
-    const token = req.headers.authorization;
-    if (!token) return res.status(401).json({ message: 'Token not found ' });
-
-    const validToken = await this.usersService.verifyToken(token);
-
-    if (validToken === false) {
-      return res.status(401).json({ message: 'Token must be a valid token' });
-    }
-
-    return res.status(200).json({ role: validToken });
+    const { role } = await UserService.verifyToken(req.headers.authorization);
+    return res.status(200).json({ role });
   };
 }
