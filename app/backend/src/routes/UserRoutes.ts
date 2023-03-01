@@ -5,5 +5,6 @@ const userRoutes = Router();
 const userController = new UserController();
 
 userRoutes.post('/', (req: Request, res: Response) => userController.sucessLogin(req, res));
+userRoutes.get('/role', (req: Request, res: Response) => userController.validateToken(req, res));
 
 export default userRoutes;

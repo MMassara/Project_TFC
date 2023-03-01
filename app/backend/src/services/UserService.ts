@@ -19,12 +19,28 @@ export default class UserService {
     const userPassword = await bcrypt.compare(password, user.password);
     if (userPassword === false) return null;
 
+    const { id } = user.dataValues;
+
     const payload = {
-      user,
+      id,
     };
 
     const token = jwt.sign(payload, 'jwt_secret');
 
     return token;
+  }
+
+  async verifyToken(token: string): Promise<string | boolean> {
+    const userToken = jwt.verify(token, 'jwt_secret');
+
+    if (typeof userToken !== 'string') {
+      const { id } = userToken;
+
+      const userRole = await this.model.findByPk(id);
+
+      return userRole?.dataValues.role;
+    }
+
+    return false;
   }
 }
