@@ -36,4 +36,22 @@ export default class MatchController {
 
     return res.status(200).json({ message: 'Finished' });
   };
+
+  public updateMatchGoals = async (req: Request, res: Response) => {
+    const token = req.headers.authorization as string;
+    if (!token) throw new HttpException(401, 'Token not found');
+
+    try {
+      jwt.verify(token, 'jwt_secret');
+    } catch (error) {
+      throw new HttpException(401, 'Token must be a valid token');
+    }
+
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+
+    await this.matchService.updateMatchesGoals(id, { homeTeamGoals, awayTeamGoals });
+
+    return res.status(200).json({ message: 'Goals updated successfully' });
+  };
 }

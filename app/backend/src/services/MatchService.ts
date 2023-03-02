@@ -51,4 +51,19 @@ export default class MatchService {
 
     return selectedMatch;
   }
+
+  async updateMatchesGoals(
+    id: string,
+    { homeTeamGoals, awayTeamGoals }: { homeTeamGoals: number; awayTeamGoals: number },
+  ): Promise<[number]> {
+    const selectedMatch = await this.model.update(
+      {
+        homeTeamGoals,
+        awayTeamGoals,
+      },
+      { where: { id } },
+    );
+
+    return selectedMatch;
+  }
 }
