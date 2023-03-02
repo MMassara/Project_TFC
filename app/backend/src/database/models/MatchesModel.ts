@@ -21,22 +21,18 @@ MatchesModel.init({
   homeTeamId: {
     allowNull: false,
     type: INTEGER,
-    field: 'home_team_id',
   },
   homeTeamGoals: {
     type: INTEGER,
     allowNull: false,
-    field: 'home_team_id',
   },
   awayTeamId: {
     allowNull: false,
     type: INTEGER,
-    field: 'home_team_id',
   },
   awayTeamGoals: {
     allowNull: false,
     type: INTEGER,
-    field: 'away_team_goals',
   },
   inProgress: {
     allowNull: false,
@@ -50,8 +46,10 @@ MatchesModel.init({
   modelName: 'matches',
 });
 
-MatchesModel.belongsTo(TeamModel, { as: 'homeTeamId', foreignKey: 'homeTeamId' });
-MatchesModel.belongsTo(TeamModel, { as: 'awayTeamId', foreignKey: 'awayTeamId' });
-TeamModel.hasMany(MatchesModel);
+TeamModel.hasMany(MatchesModel, { foreignKey: 'home_team_id', as: 'homeMatches' });
+TeamModel.hasMany(MatchesModel, { foreignKey: 'away_team_id', as: 'awayMatches' });
+
+MatchesModel.belongsTo(TeamModel, { foreignKey: 'home_team_id', as: 'homeTeam' });
+MatchesModel.belongsTo(TeamModel, { foreignKey: 'away_team_id', as: 'awayTeam' });
 
 export default MatchesModel;
