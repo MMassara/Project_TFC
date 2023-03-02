@@ -19,24 +19,24 @@ describe('Testando a Service User', () => {
     sinon.restore();
   })
 
-//   it('Verifica se retorna o token ao efetuar o login com sucesso', async () => {
-//     const outputMock = {
-//             id: 2,
-//             username: 'User',
-//             role: 'user',
-//             email: 'user@user.com',
-//             password: '$2a$08$Y8Abi8jXvsXyqm.rmp0B.uQBA5qUz7T6Ghlg/CvVr/gLxYj5UAZVO'
-//       }
+  // it('Verifica se retorna o token ao efetuar o login com sucesso', async () => {
+  //   const outputMock = {
+  //           id: 2,
+  //           username: 'User',
+  //           role: 'user',
+  //           email: 'user@user.com',
+  //           password: '$2a$08$Y8Abi8jXvsXyqm.rmp0B.uQBA5qUz7T6Ghlg/CvVr/gLxYj5UAZVO'
+  //     }
 
-//     sinon.stub(UserModel, 'findOne').resolves(outputMock as UserModel);
+  //   sinon.stub(UserModel, 'findOne').resolves(outputMock as UserModel);
 
-//     const service = new UserService();
-//     const result = await service.sucessLogin("user@user.com", "secret_user");
+  //   const service = new UserService();
+  //   const result = await service.sucessLogin("user@user.com", "secret_user");
 
-//     expect(result).to.be.eq(
-//         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJ1c2VybmFtZSI6IlVzZXIiLCJyb2xlIjoidXNlciIsImVtYWlsIjoidXNlckB1c2VyLmNvbSIsInBhc3N3b3JkIjoiJDJhJDA4JFk4QWJpOGpYdnNYeXFtLnJtcDBCLnVRQkE1cVV6N1Q2R2hsZy9DdlZyL2dMeFlqNVVBWlZPIn0sImlhdCI6MTY3NzYyNTIzOX0.mYsy_Mjr6vWgaES3egohSJGk_82nfHvJsCnJmHpSR68"
-//     );
-//   });
+  //   expect(result).to.be.eq(
+  //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoyLCJ1c2VybmFtZSI6IlVzZXIiLCJyb2xlIjoidXNlciIsImVtYWlsIjoidXNlckB1c2VyLmNvbSIsInBhc3N3b3JkIjoiJDJhJDA4JFk4QWJpOGpYdnNYeXFtLnJtcDBCLnVRQkE1cVV6N1Q2R2hsZy9DdlZyL2dMeFlqNVVBWlZPIn0sImlhdCI6MTY3NzYyNTIzOX0.mYsy_Mjr6vWgaES3egohSJGk_82nfHvJsCnJmHpSR68"
+  //   );
+  // });
 
   it('Verifica o retorno caso o login não seja efetuado com sucesso', async () => {
     sinon.stub(UserModel, 'findOne').resolves(null)

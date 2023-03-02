@@ -2,8 +2,10 @@ import { Router, Request, Response } from 'express';
 import MatchController from '../controllers/MatchController';
 
 const matchRouters = Router();
-const teamController = new MatchController();
+const matchController = new MatchController();
 
-matchRouters.get('/', (req: Request, res: Response) => teamController.findAll(req, res));
+matchRouters.get('/', (req: Request, res: Response) => matchController.findAll(req, res));
+matchRouters.patch('/:id/finish', (req: Request, res: Response) => matchController
+  .finishMatches(req, res));
 
 export default matchRouters;
