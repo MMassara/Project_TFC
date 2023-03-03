@@ -66,4 +66,20 @@ export default class MatchService {
 
     return selectedMatch;
   }
+
+  async createNewMatch(
+    homeId: number,
+    awayId: number,
+    homeGoals: number,
+    awayGoals: number,
+  ): Promise <MatchesModel> {
+    const newMatch = await this.model
+      .create({ homeTeamId: homeId,
+        awayTeamId: awayId,
+        homeTeamGoals: homeGoals,
+        awayTeamGoals: awayGoals,
+        inProgress: true });
+
+    return newMatch;
+  }
 }

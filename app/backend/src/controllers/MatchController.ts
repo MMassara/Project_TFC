@@ -1,8 +1,11 @@
-import * as jwt from 'jsonwebtoken';
+// import * as jwt from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
 import HttpException from '../middlewares/HttpException';
 import MatchService from '../services/MatchService';
+import verifyToken from '../utils/verifyToken';
+
+const tokenNotFound = 'Token not found';
 
 export default class MatchController {
   constructor(public matchService = new MatchService()) {}
@@ -22,13 +25,15 @@ export default class MatchController {
 
   public finishMatches = async (req: Request, res: Response) => {
     const token = req.headers.authorization as string;
-    if (!token) throw new HttpException(401, 'Token not found');
+    if (!token) throw new HttpException(401, tokenNotFound);
 
-    try {
-      jwt.verify(token, 'jwt_secret');
-    } catch (error) {
-      throw new HttpException(401, 'Token must be a valid token');
-    }
+    // try {
+    //   jwt.verify(token, 'jwt_secret');
+    // } catch (error) {
+    //   throw new HttpException(401, 'Token must be a valid token');
+    // }
+
+    await verifyToken(token);
 
     const { id } = req.params;
 
@@ -39,13 +44,15 @@ export default class MatchController {
 
   public updateMatchGoals = async (req: Request, res: Response) => {
     const token = req.headers.authorization as string;
-    if (!token) throw new HttpException(401, 'Token not found');
+    if (!token) throw new HttpException(401, tokenNotFound);
 
-    try {
-      jwt.verify(token, 'jwt_secret');
-    } catch (error) {
-      throw new HttpException(401, 'Token must be a valid token');
-    }
+    // try {
+    //   jwt.verify(token, 'jwt_secret');
+    // } catch (error) {
+    //   throw new HttpException(401, 'Token must be a valid token');
+    // }
+
+    await verifyToken(token);
 
     const { id } = req.params;
     const { homeTeamGoals, awayTeamGoals } = req.body;
@@ -53,5 +60,24 @@ export default class MatchController {
     await this.matchService.updateMatchesGoals(id, { homeTeamGoals, awayTeamGoals });
 
     return res.status(200).json({ message: 'Goals updated successfully' });
+  };
+
+  public createNewMatch = async (req: Request, res: Response) => {
+    const token = req.headers.authorization as string;
+    if (!token) throw new HttpException(401, tokenNotFound);
+
+    // try {
+    //   jwt.verify(token, 'jwt_secret');
+    // } catch (error) {
+    //   throw new HttpException(401, 'Token must be a valid token');
+    // }
+
+    await verifyToken(token);
+
+    const { homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals } = req.body;
+    const result = await this.matchService
+      .createNewMatch(homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals);
+
+    return res.status(201).json(result);
   };
 }

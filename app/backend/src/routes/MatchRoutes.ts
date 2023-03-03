@@ -9,5 +9,6 @@ matchRouters.patch('/:id/finish', (req: Request, res: Response) => matchControll
   .finishMatches(req, res));
 matchRouters.patch('/:id', (req: Request, res: Response) => matchController
   .updateMatchGoals(req, res));
+matchRouters.post('/', (req: Request, res: Response) => matchController.createNewMatch(req, res));
 
 export default matchRouters;
