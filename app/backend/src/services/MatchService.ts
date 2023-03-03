@@ -72,7 +72,10 @@ export default class MatchService {
     awayId: number,
     homeGoals: number,
     awayGoals: number,
-  ): Promise <MatchesModel> {
+  ): Promise <MatchesModel | boolean> {
+    const findHomeTeamId = await this.model.findOne({where: {homeTeamId: homeId}});
+    const findAwayTeamId = await this.model.findOne({where: {awayTeamId: awayId}});
+    if(!findAwayTeamId || !findHomeTeamId) return false;
     const newMatch = await this.model
       .create({ homeTeamId: homeId,
         awayTeamId: awayId,

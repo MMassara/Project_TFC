@@ -75,8 +75,12 @@ export default class MatchController {
     await verifyToken(token);
 
     const { homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals } = req.body;
+    if (homeTeamId === awayTeamId) return res.status(422).json({ message: 'It is not possible to create a match with two equal teams'})
+    
     const result = await this.matchService
       .createNewMatch(homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals);
+    
+    if (result === false) return res.status(404).json({ message: 'There is no team with such id!'})
 
     return res.status(201).json(result);
   };
