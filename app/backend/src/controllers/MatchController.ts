@@ -27,12 +27,6 @@ export default class MatchController {
     const token = req.headers.authorization as string;
     if (!token) throw new HttpException(401, tokenNotFound);
 
-    // try {
-    //   jwt.verify(token, 'jwt_secret');
-    // } catch (error) {
-    //   throw new HttpException(401, 'Token must be a valid token');
-    // }
-
     await verifyToken(token);
 
     const { id } = req.params;
