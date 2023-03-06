@@ -1,14 +1,13 @@
-import * as sequelize from 'sequelize';
+import Model from '../database/models';
+import IResumeTeam from '../interfaces/IResumeTeam';
 
-import TeamModel from '../database/models/TeamModel';
-import getLeaderboard from '../utils/getLeaderboard';
+import queryResumeTeam from '../utils/queryResumeTeam';
 
 export default class LeaderboardService {
-  protected model: sequelize.ModelStatic<TeamModel> = TeamModel;
+  protected model = Model;
 
-  public async leaderboardHome(): Promise<TeamModel[]> {
-    // const result = await this.model.findAll();
-    const result = await getLeaderboard();
+  public async leaderboardHome(): Promise<IResumeTeam[] | unknown> {
+    const result = await this.model.query(queryResumeTeam);
 
     return result;
   }
